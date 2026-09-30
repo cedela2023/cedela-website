@@ -246,20 +246,20 @@ export default async function HomePage() {
             <StaggerItem key={ind.slug}>
               <Link
                 href={`/industries/${ind.slug}`}
-                className="group relative isolate flex aspect-[5/4] flex-col justify-between overflow-hidden rounded-3xl bg-mist p-5 ring-1 ring-line transition-colors sm:p-6"
+                className="group relative isolate flex aspect-[5/4] flex-col justify-between overflow-hidden rounded-3xl bg-midnight p-5 sm:p-6"
               >
                 <Image
                   src={ind.image.src}
                   alt=""
                   fill
                   sizes="(min-width: 1024px) 25vw, 50vw"
-                  className="-z-20 object-cover opacity-0 transition-all duration-700 group-hover:scale-105 group-hover:opacity-100"
+                  className="-z-20 object-cover transition-transform duration-700 group-hover:scale-105"
                 />
-                <div className="absolute inset-0 -z-10 bg-gradient-to-t from-midnight/90 to-midnight/30 opacity-0 transition-opacity duration-700 group-hover:opacity-100" />
-                <Icon name={ind.icon} className="h-7 w-7 text-navy transition-colors duration-500 group-hover:text-sky" />
+                <div className="absolute inset-0 -z-10 bg-gradient-to-t from-midnight/90 to-midnight/30" />
+                <Icon name={ind.icon} className="h-7 w-7 text-sky" />
                 <div className="flex items-end justify-between gap-3">
-                  <h3 className="hyphens-auto text-[0.98rem] leading-tight transition-colors duration-500 [overflow-wrap:anywhere] group-hover:text-white sm:text-xl">{ind.title}</h3>
-                  <ArrowUpRight className="h-5 w-5 shrink-0 text-navy opacity-0 transition-all duration-500 group-hover:text-sky group-hover:opacity-100" />
+                  <h3 className="hyphens-auto text-[0.98rem] leading-tight text-white [overflow-wrap:anywhere] sm:text-xl">{ind.title}</h3>
+                  <ArrowUpRight className="h-5 w-5 shrink-0 text-sky transition-transform duration-500 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
                 </div>
               </Link>
             </StaggerItem>
