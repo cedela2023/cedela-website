@@ -1,6 +1,7 @@
 "use server";
 
 import { headers } from "next/headers";
+import { getSiteSettings } from "@/lib/data";
 import { acknowledgementTemplate, escapeHtml, FROM, internalTemplate, resend, route } from "@/lib/email";
 import { formSchemas, newsletterSchema, type FormKind, type FormState } from "@/lib/forms";
 
@@ -111,7 +112,7 @@ const config: Record<
   {
     subject: (d: Record<string, string | undefined>, ref: string) => string;
     inbox: (d: Record<string, string | undefined>) => Parameters<typeof route>[0];
-    ack: (d: Record<string, string | undefined>, ref: string) => { heading: string; paragraphs: string[] };
+    ack: (d: Record<string, string | undefined>, ref: string, hotlines: string[]) => { heading: string; paragraphs: string[] };
     success: (ref: string) => string;
     refPrefix: string;
   }
@@ -219,12 +220,12 @@ const config: Record<
     refPrefix: "IRES",
     subject: (d, ref) => `[${(d.severity ?? "").toUpperCase()}] iRES incident report: ${d.incidentType} at ${d.organization} [${ref}]`,
     inbox: () => "incidents",
-    ack: (_d, ref) => ({
+    ack: (_d, ref, hotlines) => ({
       heading: "Incident report received",
       paragraphs: [
         `Your incident has been logged with reference <strong>${ref}</strong>. An iRES incident handler will contact you on the phone number you provided.`,
         "While you wait: isolate affected systems from the network without powering them off, preserve logs and evidence, avoid contacting the attackers, and use a trusted channel for internal communication.",
-        "For critical incidents, call <strong>+234 915 795 1812</strong> immediately.",
+        `For critical incidents, call <strong>${hotlines.join("</strong> or <strong>")}</strong> immediately.`,
       ],
     }),
     success: (ref) => `Incident logged. Reference ${ref}. An iRES handler will call you shortly.`,
@@ -277,17 +278,19 @@ export async function submitForm(kind: FormKind, _prev: FormState, formData: For
     attachments,
   });
 
+  const hotlines = kind === "incident" ? (await getSiteSettings()).iresHotlines : [];
+
   if (!internal.ok) {
     return {
       status: "error",
       message:
         kind === "incident"
-          ? "We could not submit your report online. Please call +234 915 795 1812 now."
+          ? `We could not submit your report online. Please call ${hotlines.join(" or ")} now.`
           : "Something went wrong sending your message. Please try again or email info@cedelatechpark.ng.",
     };
   }
 
-  const ack = c.ack(data, ref);
+  const ack = c.ack(data, ref, hotlines);
   // Acknowledgement failures should not fail the submission
   await send({ to: data.email!, subject: `${ack.heading} | CEDELA`, html: acknowledgementTemplate(data.name ?? "there", ack.heading, ack.paragraphs) });
 

@@ -16,6 +16,14 @@ export const siteSettings = defineType({
     defineField({ name: "email", title: "General email", type: "string", group: "contact" }),
     defineField({ name: "phones", title: "Phone numbers", type: "array", of: [defineArrayMember({ type: "string" })], group: "contact" }),
     defineField({
+      name: "iresHotlines",
+      title: "iRES hotline numbers",
+      description: "24/7 emergency numbers shown on the iRES pages and in incident report emails",
+      type: "array",
+      of: [defineArrayMember({ type: "string" })],
+      group: "contact",
+    }),
+    defineField({
       name: "offices",
       title: "Offices",
       type: "array",

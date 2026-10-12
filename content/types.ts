@@ -206,6 +206,8 @@ export type Office = {
 export type SiteSettings = {
   email: string;
   phones: string[];
+  /** iRES 24/7 emergency hotline, kept separate from the general phone numbers */
+  iresHotlines: string[];
   offices: Office[];
   socials: { label: string; href: string }[];
   corporateProfileUrl?: string;

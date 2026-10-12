@@ -20,7 +20,7 @@ export const metadata = pageMetadata({
 
 export default async function IresPage() {
   const settings = await getSiteSettings();
-  const hotline = settings.phones[0];
+  const hotlines = settings.iresHotlines;
 
   return (
     <>
@@ -49,9 +49,13 @@ export default async function IresPage() {
           <p className="flex items-center gap-3 font-semibold">
             <ShieldAlert className="h-5 w-5 shrink-0" /> Under attack right now? Do not wait. Call the iRES hotline.
           </p>
-          <a href={`tel:${hotline.replace(/\s/g, "")}`} className="inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 font-bold text-alert transition hover:bg-white/90">
-            <Phone className="h-4 w-4" /> {hotline}
-          </a>
+          <div className="flex flex-wrap gap-2">
+            {hotlines.map((h) => (
+              <a key={h} href={`tel:${h.replace(/\s/g, "")}`} className="inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 font-bold text-alert transition hover:bg-white/90">
+                <Phone className="h-4 w-4" /> {h}
+              </a>
+            ))}
+          </div>
         </div>
       </div>
 
@@ -95,9 +99,11 @@ export default async function IresPage() {
               <ButtonLink href="/products/ires/report" variant="sky">
                 Open the iRES portal
               </ButtonLink>
-              <ButtonLink href={`tel:${hotline.replace(/\s/g, "")}`} variant="outline-light" arrow={false}>
-                Call {hotline}
-              </ButtonLink>
+              {hotlines.map((h) => (
+                <ButtonLink key={h} href={`tel:${h.replace(/\s/g, "")}`} variant="outline-light" arrow={false}>
+                  Call {h}
+                </ButtonLink>
+              ))}
             </Reveal>
           </div>
           <Stagger className="grid content-start gap-3 sm:grid-cols-3">

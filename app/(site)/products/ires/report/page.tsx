@@ -19,7 +19,7 @@ export const metadata = {
 
 export default async function ReportPage() {
   const settings = await getSiteSettings();
-  const hotline = settings.phones[0];
+  const hotlines = settings.iresHotlines;
   return (
     <>
       <PageHero
@@ -29,16 +29,20 @@ export default async function ReportPage() {
         title="Report a cyber incident"
         intro="Tell us what is happening and an iRES incident handler will call you. For critical incidents that are stopping operations, call the hotline first."
         aside={
-          <a href={`tel:${hotline.replace(/\s/g, "")}`} className="group flex items-center gap-5 rounded-3xl bg-alert p-7 text-white shadow-2xl transition hover:bg-[#d63c41]">
+          <div className="flex items-center gap-5 rounded-3xl bg-alert p-7 text-white shadow-2xl">
             <span className="relative inline-flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-white/15">
               <span className="absolute inset-0 animate-pulse-ring rounded-full bg-white/30" />
               <Phone className="relative h-6 w-6" />
             </span>
             <span>
               <span className="block text-sm font-bold uppercase tracking-[0.16em] text-white/80">24/7 emergency hotline</span>
-              <span className="mt-1 block font-serif text-3xl font-bold">{hotline}</span>
+              {hotlines.map((h) => (
+                <a key={h} href={`tel:${h.replace(/\s/g, "")}`} className="mt-1 block font-serif text-3xl font-bold underline-offset-4 hover:underline">
+                  {h}
+                </a>
+              ))}
             </span>
-          </a>
+          </div>
         }
       />
 

@@ -1,5 +1,7 @@
+import { Fragment } from "react";
 import Image from "next/image";
 import { Reveal, Stagger, StaggerItem } from "@/components/motion/reveal";
+import { BioDialog } from "@/components/sections/bio-dialog";
 import { CtaBand } from "@/components/sections/cta-band";
 import { CheckList, TagList } from "@/components/sections/lists";
 import { PageHero } from "@/components/sections/page-hero";
@@ -34,6 +36,24 @@ function initials(name: string) {
 export default async function LeadershipPage() {
   const team = await getTeam();
 
+  const expertise = (
+    <Section tone="mist">
+      <div className="grid gap-12 lg:grid-cols-12">
+        <Reveal className="lg:col-span-5">
+          <p className="eyebrow mb-6">Our leadership team</p>
+          <h2 className="text-4xl leading-tight">Multidisciplinary experience across Africa&apos;s key sectors.</h2>
+          <p className="mt-5 text-lg text-muted">
+            Our leaders bring experience across government, financial services, telecommunications, healthcare, manufacturing, education and international
+            development. Full executive biographies will be published here shortly.
+          </p>
+        </Reveal>
+        <Reveal delay={0.1} className="lg:col-span-7">
+          <TagList items={leadershipExpertise} />
+        </Reveal>
+      </div>
+    </Section>
+  );
+
   return (
     <>
       <PageHero
@@ -60,55 +80,38 @@ export default async function LeadershipPage() {
         </div>
       </Section>
 
-      {/* Team */}
-      {team.length > 0 ? (
-        groups.map((g) => {
-          const members = team.filter((m) => m.group === g.key);
-          if (!members.length) return null;
-          return (
-            <Section key={g.key} tone={g.key === "executive" ? "mist" : "white"}>
-              <SectionHeading eyebrow="Our people" title={g.title} />
-              <Stagger className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-                {members.map((m) => (
-                  <StaggerItem key={m.name} className="group">
-                    <div className="relative aspect-[4/5] overflow-hidden rounded-3xl bg-tint">
-                      {m.image ? (
-                        <Image src={m.image.src} alt={m.image.alt || m.name} fill sizes="(min-width: 1024px) 25vw, 50vw" className="object-cover grayscale transition duration-700 group-hover:scale-105 group-hover:grayscale-0" />
-                      ) : (
-                        <span className="absolute inset-0 flex items-center justify-center font-serif text-6xl font-bold text-navy/30">{initials(m.name)}</span>
-                      )}
-                      {m.linkedin && (
-                        <a href={m.linkedin} target="_blank" rel="noreferrer" aria-label={`${m.name} on LinkedIn`} className="absolute bottom-4 right-4 inline-flex h-10 w-10 items-center justify-center rounded-full bg-white text-navy shadow">
-                          <SocialIcon name="LinkedIn" className="h-4 w-4" />
-                        </a>
-                      )}
-                    </div>
-                    <h3 className="mt-5 text-xl">{m.name}</h3>
-                    <p className="text-[0.97rem] font-semibold text-navy">{m.role}</p>
-                    {m.bio && <p className="mt-3 line-clamp-4 text-[0.95rem] leading-relaxed text-muted">{m.bio}</p>}
-                  </StaggerItem>
-                ))}
-              </Stagger>
-            </Section>
-          );
-        })
-      ) : (
-        <Section tone="mist">
-          <div className="grid gap-12 lg:grid-cols-12">
-            <Reveal className="lg:col-span-5">
-              <p className="eyebrow mb-6">Our leadership team</p>
-              <h2 className="text-4xl leading-tight">Multidisciplinary experience across Africa&apos;s key sectors.</h2>
-              <p className="mt-5 text-lg text-muted">
-                Our leaders bring experience across government, financial services, telecommunications, healthcare, manufacturing, education and international
-                development. Full executive biographies will be published here shortly.
-              </p>
-            </Reveal>
-            <Reveal delay={0.1} className="lg:col-span-7">
-              <TagList items={leadershipExpertise} />
-            </Reveal>
-          </div>
-        </Section>
-      )}
+      {/* Team. Until executive profiles are published, a summary of the team's expertise stands in for them. */}
+      {groups.map((g) => {
+        const members = team.filter((m) => m.group === g.key);
+        if (!members.length) return g.key === "executive" ? <Fragment key={g.key}>{expertise}</Fragment> : null;
+        return (
+          <Section key={g.key} tone={g.key === "executive" ? "mist" : "white"}>
+            <SectionHeading eyebrow="Our people" title={g.title} />
+            <Stagger className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+              {members.map((m) => (
+                <StaggerItem key={m.name} className="group">
+                  <div className="relative aspect-[4/5] overflow-hidden rounded-3xl bg-tint">
+                    {m.image ? (
+                      <Image src={m.image.src} alt={m.image.alt || m.name} fill sizes="(min-width: 1024px) 25vw, 50vw" className="object-cover grayscale transition duration-700 group-hover:scale-105 group-hover:grayscale-0" />
+                    ) : (
+                      <span className="absolute inset-0 flex items-center justify-center font-serif text-6xl font-bold text-navy/30">{initials(m.name)}</span>
+                    )}
+                    {m.linkedin && (
+                      <a href={m.linkedin} target="_blank" rel="noreferrer" aria-label={`${m.name} on LinkedIn`} className="absolute bottom-4 right-4 inline-flex h-10 w-10 items-center justify-center rounded-full bg-white text-navy shadow">
+                        <SocialIcon name="LinkedIn" className="h-4 w-4" />
+                      </a>
+                    )}
+                  </div>
+                  <h3 className="mt-5 text-xl">{m.name}</h3>
+                  <p className="text-[0.97rem] font-semibold text-navy">{m.role}</p>
+                  {m.bio && <p className="mt-3 line-clamp-4 text-[0.95rem] leading-relaxed text-muted">{m.bio.split(/\n\s*\n/)[0]}</p>}
+                  {m.bio && <BioDialog name={m.name} role={m.role} bio={m.bio} />}
+                </StaggerItem>
+              ))}
+            </Stagger>
+          </Section>
+        );
+      })}
 
       {/* Governance structure */}
       <Section tone="midnight" className="grain">

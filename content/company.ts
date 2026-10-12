@@ -21,6 +21,7 @@ export const company = {
 export const siteSettings: SiteSettings = {
   email: "info@cedelatechpark.ng",
   phones: ["+234 915 795 1812", "+234 806 322 8775"],
+  iresHotlines: ["+234 903 891 8044", "+234 814 914 9802"],
   offices: [
     {
       name: "Abuja",

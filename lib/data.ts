@@ -47,7 +47,7 @@ function cleanImage(i?: ImageRef | null): ImageRef | undefined {
 /* ------------------------------------------------------------------ */
 
 const SETTINGS_QUERY = defineQuery(`*[_id == "siteSettings"][0]{
-  email, phones,
+  email, phones, iresHotlines,
   offices[]{ name, label, lines, mapQuery, ${img("image")} },
   socials[]{ label, href },
   "corporateProfileUrl": corporateProfile.asset->url,
@@ -74,6 +74,7 @@ export async function getSiteSettings(): Promise<SiteSettings> {
   return {
     email: doc.email || seedSettings.email,
     phones: doc.phones?.length ? doc.phones : seedSettings.phones,
+    iresHotlines: doc.iresHotlines?.length ? doc.iresHotlines : seedSettings.iresHotlines,
     offices: doc.offices?.length
       ? doc.offices.map((o, i) => ({
           ...seedSettings.offices[i],

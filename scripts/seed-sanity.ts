@@ -78,6 +78,7 @@ async function main() {
     _type: "siteSettings",
     email: siteSettings.email,
     phones: siteSettings.phones,
+    iresHotlines: siteSettings.iresHotlines,
     offices: await Promise.all(
       siteSettings.offices.map(async (o) => ({
         _key: key(),

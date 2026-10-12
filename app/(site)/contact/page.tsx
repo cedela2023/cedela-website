@@ -75,7 +75,16 @@ export default async function ContactPage({ searchParams }: PageProps<"/contact"
               <a href="/products/ires/report" className="font-semibold text-alert underline underline-offset-2">
                 Report it to iRES
               </a>{" "}
-              or call {settings.phones[0]}.
+              or call{" "}
+              {settings.iresHotlines.map((h, i) => (
+                <span key={h}>
+                  {i > 0 && " or "}
+                  <a href={`tel:${h.replace(/\s/g, "")}`} className="font-semibold text-alert">
+                    {h}
+                  </a>
+                </span>
+              ))}
+              .
             </p>
           </div>
           <Reveal delay={0.1} id="form" className="scroll-mt-32 rounded-[2rem] bg-mist p-8 ring-1 ring-line sm:p-10 lg:col-span-7">
