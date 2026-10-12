@@ -11,7 +11,7 @@ export function Footer({ settings }: { settings: SiteSettings }) {
   const year = new Date().getFullYear();
   return (
     <footer className="on-dark grain relative isolate overflow-hidden bg-midnight-900 text-white">
-      <LogoMark className="pointer-events-none absolute -bottom-40 -right-40 -z-10 h-[36rem] w-[36rem] opacity-[0.04]" color="#77D4FC" />
+      <LogoMark className="pointer-events-none absolute -bottom-40 -right-40 -z-10 h-144 w-xl opacity-[0.04]" color="#77D4FC" />
 
       <div className="container-x border-b border-white/10 py-16 lg:py-20">
         <div className="grid gap-10 lg:grid-cols-12 lg:items-end">
