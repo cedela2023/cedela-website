@@ -90,7 +90,7 @@ export default async function LeadershipPage() {
             <Stagger className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
               {members.map((m) => (
                 <StaggerItem key={m.name} className="group">
-                  <div className="relative aspect-[4/5] overflow-hidden rounded-3xl bg-tint">
+                  <div className="relative aspect-4/5 overflow-hidden rounded-3xl bg-tint">
                     {m.image ? (
                       <Image src={m.image.src} alt={m.image.alt || m.name} fill sizes="(min-width: 1024px) 25vw, 50vw" className="object-cover grayscale transition duration-700 group-hover:scale-105 group-hover:grayscale-0" />
                     ) : (
@@ -124,7 +124,7 @@ export default async function LeadershipPage() {
             <Line />
             <div className="grid w-full gap-3 sm:grid-cols-3">
               {governanceCommittees.map((c) => (
-                <div key={c.title} className="rounded-2xl bg-white/[0.05] p-5 text-left ring-1 ring-white/10">
+                <div key={c.title} className="rounded-2xl bg-white/5 p-5 text-left ring-1 ring-white/10">
                   <p className="font-serif text-lg font-bold">{c.title}</p>
                   <p className="mt-1 text-sm leading-snug text-white/60">{c.body}</p>
                 </div>
