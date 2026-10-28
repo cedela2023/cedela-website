@@ -1,6 +1,7 @@
 import { draftMode } from "next/headers";
 import { VisualEditing } from "next-sanity/visual-editing";
 import { Analytics } from "@/components/layout/analytics";
+import { BackToTop } from "@/components/layout/back-to-top";
 import { Footer } from "@/components/layout/footer";
 import { Header } from "@/components/layout/header";
 import { SmoothScroll } from "@/components/motion/smooth-scroll";
@@ -43,6 +44,7 @@ export default async function SiteLayout({ children }: LayoutProps<"/">) {
       <Header announcement={settings.announcement} />
       <main id="main">{children}</main>
       <Footer settings={settings} />
+      <BackToTop />
       <SmoothScroll />
       <Analytics />
       {isSanityConfigured && <SanityLive />}
